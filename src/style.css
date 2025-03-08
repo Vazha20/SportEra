@@ -1,0 +1,138 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+#Color{
+    background-color: #333;
+}
+/* საერთო სტილი */
+ul {
+    list-style: none;
+    font-family: Georgia, 'Times New Roman', Times, serif; 
+    gap: 40px;
+}
+.ss{
+    margin-top: 0px;
+}
+
+ul li a {
+    text-decoration: none;
+    display: block;
+    font-size: larger;
+    font-weight: bold;     
+    color: white;
+    box-sizing: border-box; /* ამაზე დამატება */
+    padding-bottom: 5px; /* სივრცის დამატება */
+}
+
+/* მაუსის გადატანისას ხაზის დამატება */
+ul li a:hover {
+    border-bottom: 5px solid #ff3131; /* ხაზის გასმა */
+    padding-bottom: 0px; /* padding დარჩება მუდმივი */
+}
+
+
+/* სუბმენის (ქვედა მენიუს) დასაწყისი */
+ul li .submenu {
+    display: none; /* ამ ეტაპზე დამალულია */
+    list-style: none;
+    position: absolute;
+    background-color: #7f7f7f;
+    padding: 10px;
+    margin-top: 17px;
+    left: 0;
+    min-width: 300px;
+    min-height: 300px;
+}
+
+/* სუბმენიუ გაშლის ეფექტი */
+ul li .submenu {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s; /* ანიმაცია */
+}
+
+ul li:hover .submenu {
+    display: block; /* მაუსის გადატანისას გამოჩნდება */
+    opacity: 1;
+    visibility: visible;
+}
+
+
+.desktop-only {
+    display: block;
+}
+.response-only {
+    display: none;
+}
+@media only screen and (max-width: 992px) {
+    .desktop-only {
+        display: none;
+    }
+    .response-only {
+        display: block;
+    }
+}
+.Icon{
+    background-color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* Autorizacia fanjara */
+.auth-popup {
+    display: none; /* თავდაპირველად დახურულია */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5); /* გამჭვირვალე ფონდი */
+}
+
+.auth-popup-content {
+    background-color: white;
+    margin: 4% auto;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 80%;
+    font-family:Georgia, 'Times New Roman', Times, serif; 
+    
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.btn-primary{
+    width: 400px;
+    height: 50px;
+    background-color: #ff3131;
+    border-style: none;
+    color: white;
+    border-radius: 10px;
+}
+.GapSize{
+    width: 400px;
+    height: 50px;
+    border-radius: 10px;
+    padding: 10px;
+}
+.Font{
+    font-family:Georgia, 'Times New Roman', Times, serif; 
+    font-size: 20px;
+}
