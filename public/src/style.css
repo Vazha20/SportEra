@@ -9,55 +9,89 @@ body {
 ul {
     list-style: none;
     font-family: Georgia, 'Times New Roman', Times, serif; 
-    gap: 40px;
+    gap: 32px;
 }
 .ss{
     margin-top: 0px;
 }
 
-ul li a {
+
+
+
+.arrow {
+
+    display: inline-block; /* უნდა იყოს inline-block, რათა უკეთ შეცვალოს ტრანსფორმაცია */
+    transition: transform 0.1s ease; /* ისარის ტრიალის ანიმაცია */
+}
+
+.arrow.rotate {
+    transform: rotate(180deg); /* ტრიალი 180 გრადუსით */
+    color: #ff3131;
+
+}
+
+/* სხვა CSS */
+.redLine {
     text-decoration: none;
     display: block;
     font-size: larger;
-    font-weight: bold;     
+    font-weight: bold;
     color: white;
-    box-sizing: border-box; /* ამაზე დამატება */
-    padding-bottom: 5px; /* სივრცის დამატება */
+    box-sizing: border-box;
+    padding-bottom: 5px;
 }
 
-/* მაუსის გადატანისას ხაზის დამატება */
-ul li a:hover {
-    border-bottom: 5px solid #ff3131; /* ხაზის გასმა */
-    padding-bottom: 0px; /* padding დარჩება მუდმივი */
+.redLine:hover,
+.redLine.open { 
+    border-bottom: 5px solid #ff3131;
+    padding-bottom: 0px;
 }
 
-
-/* სუბმენის (ქვედა მენიუს) დასაწყისი */
 ul li .submenu {
-    display: none; /* ამ ეტაპზე დამალულია */
-    list-style: none;
+    display: none;
+   list-style:disc;
     position: absolute;
-    background-color: #7f7f7f;
-    padding: 10px;
+    background-color: white;
+    padding: 10px 30px;
     margin-top: 17px;
     left: 0;
-    min-width: 300px;
-    min-height: 300px;
+    width: 520px;
     z-index: 10;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+ 
 }
 
-/* სუბმენიუ გაშლის ეფექტი */
-ul li .submenu {
+
+
+.submenu {
+    display: none;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s, visibility 0.3s; /* ანიმაცია */
+    transition: opacity 0.3s, visibility 0.3s;
+   
+
 }
 
-ul li:hover .submenu {
-    display: block; /* მაუსის გადატანისას გამოჩნდება */
+.submenu a {
+    color:  black;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: large;
+    text-decoration: none;
+
+}
+.submenu a:hover{
+    border-bottom: 5px solid #ff3131;
+    padding-bottom: 0px;
+}
+
+.submenu.open {
+    display: block;
     opacity: 1;
     visibility: visible;
 }
+
+
 
 
 .desktop-only {
@@ -82,18 +116,19 @@ ul li:hover .submenu {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 /* Autorizacia fanjara */
 .auth-popup {
     display: none; /* თავდაპირველად დახურულია */
     position: fixed;
-    z-index: 1;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.5); /* გამჭვირვალე ფონდი */
     z-index: 10;
+    animation: fadeIn 0.3s;
 }
 
 .auth-popup-content {
@@ -104,11 +139,12 @@ ul li:hover .submenu {
     max-width: 500px;
     width: 80%;
     font-family:Georgia, 'Times New Roman', Times, serif; 
+    animation: slideUp 0.3s ease;
     
 }
 
 .close-btn {
-    color: #aaa;
+    color: black;
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -116,7 +152,7 @@ ul li:hover .submenu {
 
 .close-btn:hover,
 .close-btn:focus {
-    color: black;
+    color: #ff3131;
     text-decoration: none;
     cursor: pointer;
 }
@@ -187,12 +223,13 @@ ul li:hover .submenu {
     border-radius: 5px;
     margin-bottom: 10px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 }
 
 .news-item img {
     width: 60px;
     height: 60px;
-    border-radius: 5px;
+    border-radius: 10px;
     margin-right: 10px;
 }
 .main-news-card img {
@@ -221,6 +258,8 @@ ul li:hover .submenu {
 .news-item.active {
     background-color: #ff3131;
     transform: scale(1.05);
+    border-radius: 10px;
+  
 }
 
 
@@ -247,7 +286,7 @@ ul li:hover .submenu {
     padding: 10px;
     text-align: left;
     border: none;
-    background: #333;
+    background: #888888;
     cursor: pointer;
     border-radius: 5px;
     color: white;
@@ -260,3 +299,102 @@ ul li:hover .submenu {
 .video-item {
     margin-bottom: 15px;
 }
+
+/* მთლიანად ღილაკის სტილი */
+.navbar-toggler {
+    background-color: white !important;
+  
+}
+
+.bgBurger{
+    background-color: #333;
+}
+
+
+
+
+/* The Modal (background) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    animation: fadeIn 0.3s;
+}
+
+/* Modal Content */
+.modal-content {
+    background: rgba(0, 0, 0, 0.7) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-style: none;
+    margin: 4% auto;
+    padding: 60px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    animation: slideUp 0.3s ease;
+}
+
+/* The Close Button */
+.close-btnSearch {
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.close-btnSearch:hover,
+.close-btnSearch:focus {
+    color: #ff3131;
+}
+
+/* Search Input Style */
+#searchInput {
+    width: 300px;
+    padding: 14px;
+  
+    font-size: 16px;
+    border-radius: 16px;
+    outline: none;
+    color: black;
+    /* From https://css.glass */
+
+}
+
+
+
+/* Search Button */
+.search-btn {
+    background-color: white;
+    width: 50px;
+    border-style: none;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.search-btn:hover {
+    background-color: #ff3131;
+}
+
+/* FadeIn and SlideUp Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(30px); }
+    to { transform: translateY(0); }
+}
+

@@ -48,6 +48,7 @@ window.addEventListener('click', function(event) {
 
 
 
+
 document.addEventListener("DOMContentLoaded", function() {
     let newsItems = document.querySelectorAll(".news-list .news-item");
     let mainNewsContainer = document.querySelector(".main-news-card");
@@ -112,3 +113,90 @@ document.addEventListener("DOMContentLoaded", function() {
     setInterval(updateMainNews, 10000);
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    const menuLinks = [
+        { linkId: 'football-link', submenuId: 'football-submenu', arrowId: 'football-arrow' },
+        { linkId: 'basketball-link', submenuId: 'basketball-submenu', arrowId: 'basketball-arrow' },
+        { linkId: 'rugby-link', submenuId: 'rugby-submenu', arrowId: 'rugby-arrow' },
+        { linkId: 'tennis-link', submenuId: 'tennis-submenu', arrowId: 'tennis-arrow' },
+        { linkId: 'other-sport-link', submenuId: 'other-sport-submenu', arrowId: 'other-sport-arrow' } // სხვა კატეგორია
+    ];
+
+    let openSubmenu = null; // ვქმნით ცვლადს, რომელიც აკონტროლებს გახსნილ submenu-ს.
+
+    // Iterate through all menu items
+    menuLinks.forEach(function(menu) {
+        const link = document.getElementById(menu.linkId);
+        const submenu = document.getElementById(menu.submenuId);
+        const arrow = document.getElementById(menu.arrowId);
+
+        link.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default action
+
+            // If there is an open submenu and it's not the same as the one being clicked, close it
+            if (openSubmenu && openSubmenu !== submenu) {
+                openSubmenu.classList.remove('open');
+                const openArrow = openSubmenu.previousElementSibling.querySelector('.arrow');
+                openArrow.classList.remove('rotate');
+                openSubmenu.previousElementSibling.classList.remove('open');
+            }
+
+            // Toggle the clicked submenu
+            submenu.classList.toggle('open'); 
+            link.classList.toggle('open');  // Toggle the link style
+            arrow.classList.toggle('rotate'); // Toggle the arrow rotation
+
+            // Update the open submenu
+            if (submenu.classList.contains('open')) {
+                openSubmenu = submenu;
+            } else {
+                openSubmenu = null;
+            }
+
+            // Prevent the click event from bubbling up to the document level
+            event.stopPropagation();
+        });
+    });
+
+    // Click on the document to close the submenu when clicking outside
+    document.addEventListener('click', function(event) {
+        menuLinks.forEach(function(menu) {
+            const link = document.getElementById(menu.linkId);
+            const submenu = document.getElementById(menu.submenuId);
+            const arrow = document.getElementById(menu.arrowId);
+
+            // Check if the click is outside the link or submenu
+            if (!link.contains(event.target) && !submenu.contains(event.target)) {
+                submenu.classList.remove('open');
+                arrow.classList.remove('rotate');
+                link.classList.remove('open');
+            }
+        });
+    });
+});
+
+// Get the modal
+var modal = document.getElementById("searchModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("openPopupBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close-btnSearch")[0];
+
+// When the user clicks the button, open the modal
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
