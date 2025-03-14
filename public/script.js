@@ -200,3 +200,54 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 }
+
+
+
+
+
+
+
+
+const swiper = new Swiper('.slider-wrapper', {
+    loop: true,
+    grabCursor: true,
+    spaceBetween: 20,
+    
+ 
+    
+    // Navigation arrows
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+  
+    // Responsive breakpoints
+    breakpoints: {
+      0: {
+        slidesPerView: 1
+      },
+      768: {
+        slidesPerView: 2
+      },
+      1024: {
+        slidesPerView: 3
+      },
+      1440: {
+        slidesPerView: 4
+      }
+    }
+  });
+  
+// Select all category items
+const categoryItems = document.querySelectorAll('.card-item');
+
+// Add click event listener for each category item
+categoryItems.forEach(item => {
+  item.addEventListener('click', function(e) {
+    // Remove 'active' class from all items
+    categoryItems.forEach(item => item.classList.remove('active'));
+    
+    // Add 'active' class to the clicked item
+    e.target.classList.add('active');
+  });
+});
