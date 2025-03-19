@@ -1,8 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-auth.js";
 import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-firestore.js";
-
-
 
 const firebaseConfig = {
     apiKey: "AIzaSyBDttBUMsMMkPXJrN9VW9ggeTpKZZKHqLo",
@@ -12,43 +10,67 @@ const firebaseConfig = {
     messagingSenderId: "396713612036",
     appId: "1:396713612036:web:03dbb958456b6d8906b651",
     measurementId: "G-TG83S43Z78"
-  };
+};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Validate email function
-function validate_email(email) {
-    return email && email.includes('@'); 
-}
+// მოძებნეთ ელემენტები
+const loginBtn = document.getElementById('loginBtn');
+const authPopup = document.getElementById('authPopup');
+const closeBtn = document.getElementById('closeBtn');
+const logoutBtn = document.getElementById('logoutBtn');
 
-// Validate password function
-function validate_password(password) {
-    return password && password.length >= 6; 
-}
-
-// Event listener for the login form
-document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('loginForm').addEventListener('submit', signIn);
+// შესვლის ფანჯრის ჩვენება
+loginBtn.addEventListener('click', function(event) {
+    event.preventDefault();
+    authPopup.style.display = 'block';
 });
 
-async function signIn(event) {
-    event.preventDefault(); // Prevent form submission
+// შესვლის ფანჯრის დახურვა
+closeBtn.addEventListener('click', function() {
+    authPopup.style.display = 'none';
+});
+
+// ფანჯრის დახურვა, თუ მომხმარებელი გარეთ დააწერს
+window.addEventListener('click', function(event) {
+    if (event.target === authPopup) {
+        authPopup.style.display = 'none';
+    }
+});
+
+// Email ვალიდაცია
+function validate_email(email) {
+    return email && email.includes('@');
+}
+
+// Password ვალიდაცია
+function validate_password(password) {
+    return password && password.length >= 6;
+}
+
+// Login ფორმის Event Listener
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('loginForm').addEventListener('submit', signInWithUsernameOrEmail);
+});
+
+// შესვლა username-ით ან email-ით
+async function signInWithUsernameOrEmail(event) {
+    event.preventDefault();
 
     const usernameOrEmail = document.getElementById('usernameOrEmail').value;
     const password = document.getElementById('password').value;
-
-    // Check if loading element exists before modifying its style
     const loadingElement = document.getElementById('loading');
+
     if (loadingElement) {
-        loadingElement.style.display = 'block'; // Show loading indicator
+        loadingElement.style.display = 'block';
     }
 
-    let email = usernameOrEmail; 
+    let email = usernameOrEmail;
 
-    // თუ მომხმარებელმა `username` შეიყვანა, მოვიძიოთ შესაბამისი ელფოსტა Firestore-ში
+    // თუ მომხმარებელი ცდილობს შესვლას username-ით, ვეძებთ email-ს Firestore-ში
     if (!validate_email(usernameOrEmail)) {
         try {
             const usersRef = collection(db, "users");
@@ -60,7 +82,7 @@ async function signIn(event) {
             }
 
             querySnapshot.forEach((doc) => {
-                email = doc.data().email; // მოვძებნეთ შესაბამისი ელფოსტა
+                email = doc.data().email;
             });
         } catch (error) {
             if (loadingElement) {
@@ -71,25 +93,61 @@ async function signIn(event) {
         }
     }
 
-    // ელფოსტით ავტორიზაცია
+    // Email-ით შესვლა
     signInWithEmailAndPassword(auth, email, password)
         .then(function (userCredential) {
-            const user = userCredential.user;
-
             if (loadingElement) {
                 loadingElement.style.display = 'none';
             }
-
+            
             alert('User signed in successfully.');
-            window.location.reload(); 
+            authPopup.style.display = 'none'; // ფანჯრის დახურვა
+            updateUI(true); // UI განახლება (Login ღილაკის დამალვა, Logout-ის გამოჩენა)
         })
         .catch(function (error) {
             if (loadingElement) {
                 loadingElement.style.display = 'none';
             }
-
             alert(`Error: ${error.code} - ${error.message}`);
         });
 }
 
+// Logout ფუნქცია
+function logOut() {
+    signOut(auth)
+        .then(() => {
+            alert("User logged out successfully!");
+            updateUI(false); // UI განახლება (Logout ღილაკის დამალვა, Login-ის გამოჩენა)
+        })
+        .catch((error) => {
+            alert(`Error: ${error.message}`);
+        });
+}
 
+// Logout ღილაკის Event Listener
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', logOut);
+}
+
+
+
+
+// მომხმარებლის სტატუსის შემოწმება
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        updateUI(true); // მომხმარებელი შესულია
+    } else {
+        updateUI(false); // მომხმარებელი გასულია
+    }
+});
+
+// UI განახლების ფუნქცია
+function updateUI(isLoggedIn) {
+    if (isLoggedIn) {
+        loginBtn.style.display = 'none';
+        logoutBtn.style.display = 'block';
+    } else {
+        loginBtn.style.display = 'block';
+        logoutBtn.style.display = 'none';
+    } 
+}
