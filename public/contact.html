@@ -55,13 +55,16 @@
     </div>
 </div>
 
-                    <a id="loginBtn">
-                        <div class="Icon">
-                            
-                                <img width="30px" src="./src/img/user.png">
-                            
-                        </div>
-                    </a>
+
+
+<a id="loginBtn">
+    <div class="Icon">
+        <img width="30px" src="./src/img/user.png">
+    </div>
+</a>
+<button id="logoutButton">Logout</button>
+
+
              
             </div>
             </div>
@@ -103,9 +106,10 @@
                 </a>
                 <ul class="submenu" id="basketball-submenu">
                     <li><a href="#">ქართველები</a></li>
-                    <li><a href="#">სუპერლიგა</a></li>
+                    <li><a href="#">სუპერლიგა(საქართველო)</a></li>
                     <li><a href="#">NBA</a></li>
                     <li><a href="#">ევრობასკეტი</a></li>
+                    <li><a href="#">ეროვნული ნაკრები</a></li>
                 </ul>
             </li>
 
@@ -125,9 +129,9 @@
                     <span id="rugby-arrow" class="arrow">&#9662;</span> <!-- ისარი -->
                 </a>
                 <ul class="submenu" id="rugby-submenu">
-                    <li><a href="#">სუბმენი 1</a></li>
+                    <li><a href="#">ქართველები</a></li>
                     <li><a href="#">სუბმენი 2</a></li>
-                    <li><a href="#">სუბმენი 3</a></li>
+                    <li><a href="#">ეროვნული ნაკრები</a></li>
                 </ul>
             </li>
             
@@ -138,9 +142,9 @@
                     <span id="other-sport-arrow" class="arrow">&#9662;</span> <!-- ისარი -->
                 </a>
                 <ul class="submenu" id="other-sport-submenu">
-                    <li><a href="#">სუბმენი 1</a></li>
-                    <li><a href="#">სუბმენი 2</a></li>
-                    <li><a href="#">სუბმენი 3</a></li>
+                    <li><a href="#">ძიუდო</a></li>
+                    <li><a href="#">MMA</a></li>
+                    <li><a href="#">ფორმულა 1</a></li>
                 </ul>
             </li>
             
@@ -206,7 +210,7 @@
         <span id="closeBtn" class="close-btn">&times;</span>
         <!-- აქ შეგიძლიათ დააყენოთ თქვენი ავტორიზაციის ფორმა -->
          <div class="d-flex justify-content-center mt-5">
-            <form id="loginForm">
+            <form id="loginForm" action="login.php" method="POST">
                 <h2 class="text-center Font">ავტორიზაცია</h2>
                 <input class="GapSize mt-4" type="text" placeholder="მომხმარებლის სახელი ან ელ-ფოსტა" id="usernameOrEmail" required><br>
                 <input class="GapSize mt-3" type="password" placeholder="პაროლი" id="password" required><br>
@@ -214,15 +218,16 @@
                 <div id="showRegistration" class="text-center mt-3 Font">
                     <a>რეგისტრაცია</a>
                 </div>
-                <p class="text-center mt-3 Font">ან გამოყენეთ:</p>
+                <p class="text-center mt-3 Font">ან გამოიყენეთ:</p>
                 <div class="d-flex justify-content-center gap-5 mb-4">
                     <img width="40px" src="./src/img/facebook.png">
                     <img width="40px" src="./src/img/facebook.png">
                 </div>
             </form>
+            
          </div>
          <div class="d-flex justify-content-center">
-            <form id="registrationForm" style="display: none;">
+            <form id="registrationForm" style="display: none;" action="register.php" method="POST">
                 <h2 class="text-center Font">რეგისტრაცია</h2>
                 <input class="GapSize mt-4" type="text" placeholder="ელ-ფოსტა" id="regEmail" required><br>
                 <input class="GapSize mt-3" type="text" placeholder="მომხმარებლის სახელი" id="userName" autocomplete="username" required><br>
@@ -232,10 +237,10 @@
                 <button type="button" id="backToLogin" class="btn-primary mt-3 mb-4">უკან დაბრუნება</button>
             </form>
             
+            
          </div>
     </div>
 </div>
-  
 
 
 
@@ -301,8 +306,9 @@
   </footer>
 
     <script type="module" src="script.js"></script>
-    <script type="module" src="login.js"></script>
     <script type="module" src="register.js"></script>
+    <script type="module" src="login.js"></script>
+    <script type="module" src="logout.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

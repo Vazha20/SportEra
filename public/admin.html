@@ -24,11 +24,18 @@
 
 
 <div class="container mt-5">
-    <form id="matchForm">
-        <label for="title">Title</label><input type="text" id="title" required><br>
-        <label for="text">Text</label><textarea id="text" required></textarea><br>
-        <button type="submit">Upload Match Info</button>
-    </form>
+   
+  <form action="addarticle.php" method="POST" enctype="multipart/form-data">
+        
+    <input type="text" name="title" required><br><br>
+
+    <textarea name="content" required></textarea><br><br>
+
+   
+    <input type="file" name="image" accept="image/*" required><br><br>
+
+    <input type="submit" value="სტატიის დამატება">
+</form>
   </div>
 
 
@@ -37,7 +44,7 @@
 <div class="mt-5"></div>
 
 
-<script type="module" src="./admin.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

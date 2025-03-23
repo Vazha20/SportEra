@@ -1,25 +1,15 @@
-import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-auth.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-firestore.js";
+// Функция для проверки email
+function validate_email(email) {
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+  return emailRegex.test(email);
+}
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBDttBUMsMMkPXJrN9VW9ggeTpKZZKHqLo",
-  authDomain: "sportera22.firebaseapp.com",
-  projectId: "sportera22",
-  storageBucket: "sportera22.appspot.com",
-  messagingSenderId: "396713612036",
-  appId: "1:396713612036:web:03dbb958456b6d8906b651",
-  measurementId: "G-TG83S43Z78"
-};
+// Функция для проверки пароля (например, минимум 6 символов)
+function validate_password(password) {
+  return password.length >= 6;
+}
 
-// ✅ ამოწმებს, უკვე არსებობს თუ არა Firebase აპი
-const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const firestore = getFirestore(app); // Firestore-ის ინიციალიზაცია
-
-document.getElementById('registrationForm').addEventListener('submit', register);
-
-async function register(event) {
+document.getElementById('registrationForm').addEventListener('submit', async function(event) {
   event.preventDefault();
 
   const email = document.getElementById('regEmail').value;
@@ -32,56 +22,57 @@ async function register(event) {
     return;
   }
 
+  // AJAX запрос для проверки email и имени
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-    
-    const userData = {
-      username: username,
-      email: email,
-      last_login: new Date().toISOString(),
-    };
+    const response = await fetch('check_user.php', {
+      method: 'POST',
+      body: new URLSearchParams({
+        email: email,
+        username: username,
+      }),
+    });
 
-    // 🔥 Firestore-ში მონაცემების დამატება
-    await setDoc(doc(firestore, "users", user.uid), userData);
+    const data = await response.text(); // Получаем ответ (успех/ошибка)
+    if (data) {
+      alert(data); // Если пользователь уже существует
+    } else {
+      // Если ошибок нет, продолжаем регистрацию
+      const response = await fetch('register.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+          email: email,
+          username: username,
+          password: password,
+          confirmPassword: confirmPassword,
+        }),
+      });
 
-    localStorage.setItem('userData', JSON.stringify(userData));
-
-    alert('User created successfully.');
+      const data = await response.text();
+      alert(data); // Показываем ответ (успех/ошибка)
+    }
   } catch (error) {
-    console.error('Error creating user:', error);
-    alert(`Error: ${error.code} - ${error.message}`);
+    console.error('Error:', error);
+    alert('Error: ' + error.message);
   }
-}
-
-function validate_email(email) {
-  const expression = /^[^@]+@\w+(\.\w+)+\w$/;
-  return expression.test(email);
-}
-
-function validate_password(password) {
-  return password.length >= 6 && /[A-Z]/.test(password);
-}
-
-document.getElementById('registerButton').addEventListener('click', register);
+});
 
 document.addEventListener("DOMContentLoaded", function() {
-    const showRegistration = document.getElementById("showRegistration");
-    const loginForm = document.getElementById("loginForm");
-    const registrationForm = document.getElementById("registrationForm");
+  const showRegistration = document.getElementById("showRegistration");
+  const loginForm = document.getElementById("loginForm");
+  const registrationForm = document.getElementById("registrationForm");
 
-    if (showRegistration) {
-        showRegistration.addEventListener("click", function() {
-            loginForm.style.display = "none";
-            registrationForm.style.display = "block";
-        });
-    }
+  if (showRegistration) {
+      showRegistration.addEventListener("click", function() {
+          loginForm.style.display = "none";
+          registrationForm.style.display = "block";
+      });
+  }
 
-    const backToLogin = document.getElementById("backToLogin");
-    if (backToLogin) {
-        backToLogin.addEventListener("click", function() {
-            registrationForm.style.display = "none";
-            loginForm.style.display = "block";
-        });
-    }
+  const backToLogin = document.getElementById("backToLogin");
+  if (backToLogin) {
+      backToLogin.addEventListener("click", function() {
+          registrationForm.style.display = "none";
+          loginForm.style.display = "block";
+      });
+  }
 });
